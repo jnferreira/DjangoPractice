@@ -1,0 +1,13 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+
+
+<link href='https://fonts.googleapis.com/css?family=Exo:700' rel='stylesheet' type='text/css'>
+
+<div id="nav-wrap">
+    <div id="scroller-anchor"><a style="color:white" href="{% url 'index' %}">Rally Legends</a></div>
+</div>
+
+
+{% block content %}{% endblock %}

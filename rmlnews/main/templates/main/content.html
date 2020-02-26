@@ -1,0 +1,12 @@
+{% extends "main/index.html" %} {% block content %} {% if latest_news_list %} {% for text in latest_news_list %}
+
+<div id="content-wrap">
+    <div class="row row-nav" data-height="100" id="row1">{{ text.text }}
+    </div>
+</div>
+
+{% endfor %} {% else %}
+
+<p>No news are available.</p>
+
+{% endif %} {% endblock %}
