@@ -1,0 +1,36 @@
+{% extends "projects/base.html" %} {% load static %} {% block page_content %}
+<div class="row">
+    <div class="col-md-4">
+        <h3><a href="{% url 'project_index' %}">About the project</a></h3>
+    </div>
+</div>
+
+
+<div class="col-md-8 offset-md-2">
+    <form action="/projects/add/" method="post">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            {{ form.title }}
+
+        </div>
+
+        <div class="form-group">
+
+            {{ form.description }}
+
+        </div>
+
+        <div class="form-group">
+
+            {{ form.technology }}
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+</div>
+{% endblock %}
