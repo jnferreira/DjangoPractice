@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
 
+from django.core.paginator import Paginator
+
 # Create your views here.
 def project_index(request):
 
@@ -15,9 +17,16 @@ def project_index(request):
 
     projects = Project.objects.all()
 
+    paginator = Paginator(projects, 5)
+
+    page_number = request.GET.get('page')
+
+    page_obj = paginator.get_page(page_number)
+
     context = {
 
-        'projects': projects
+        'projects': projects,
+        'page_obj': page_obj
 
     }
 

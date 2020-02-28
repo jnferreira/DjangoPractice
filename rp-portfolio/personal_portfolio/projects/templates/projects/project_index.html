@@ -1,11 +1,8 @@
 {% extends "projects/base.html" %} {% load static %} {% block page_content %}
 
-<h1>Projects</h1>
-
-
 <div class="row">
 
-    {% for project in projects %}
+    {% for project in page_obj %}
 
     <div class="col-md-4">
 
@@ -35,19 +32,20 @@
 
 </div>
 
-<div class="row">
-    <div class="col-md-2">
-        <a href="{% url 'add_projects' %}" class="btn btn-primary">
 
-        Add projects
-    
-    </a></div>
-    <div class="col-md-1">
-        <a href="{% url 'logout_view' %}" class="btn btn-primary">
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
-        Logout
-    
-    </a></div>
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span> {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+    </span>
 </div>
 
 {% endblock %}
