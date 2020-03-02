@@ -22,6 +22,12 @@ class ProjectForm(forms.Form):
         })
     )
 
+    photo = forms.FileField()
+
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()
+
 class AuthForm(forms.Form):
     username = forms.CharField(
         max_length=20,

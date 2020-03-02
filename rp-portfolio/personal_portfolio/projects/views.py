@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Project
 
-from .forms import ProjectForm, AuthForm
+from .forms import ProjectForm, AuthForm, UploadFileForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
@@ -9,11 +9,25 @@ from django.contrib.auth import logout
 
 from django.core.paginator import Paginator
 
+from django.core.files.storage import FileSystemStorage
+
+fs = FileSystemStorage(location='/home/nunoferreira/Desktop/django_practice/rp-portfolio/personal_portfolio/projects/static') 
+
+def handle_uploaded_file(f):
+    with open('/home/nunoferreira/Desktop/django_practice/rp-portfolio/personal_portfolio/projects/static', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
 # Create your views here.
 def project_index(request):
 
-    if not request.user.is_authenticated:
-        return redirect('auth')
+    print(request.user.get_username())
+
+    if request.user.is_authenticated:
+        username = request.user.get_username()
+    else:
+        username = 'John Doe'
+
 
     projects = Project.objects.all()
 
@@ -26,7 +40,8 @@ def project_index(request):
     context = {
 
         'projects': projects,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'username': username
 
     }
 
@@ -34,8 +49,8 @@ def project_index(request):
 
 def project_detail(request, pk):
 
-    if not request.user.is_authenticated:
-        return redirect('auth')
+    # if not request.user.is_authenticated:
+    #     return redirect('auth')
 
     project = Project.objects.get(pk=pk)
 
@@ -52,20 +67,30 @@ def add_projects(request):
         return redirect('auth')
 
     form = ProjectForm()
-
+    
     if request.method == 'POST':
 
         form = ProjectForm(request.POST)
 
         if form.is_valid():
 
+            myfile = request.FILES['photo']
+
+            filename = fs.save(myfile.name, myfile)
+
+            uploaded_file_url = fs.url(filename)
+
+            handle_uploaded_file(request.FILES['photo'])
+            
             project = Project(
 
                 title=form.cleaned_data["title"],
 
                 description=form.cleaned_data["description"],
 
-                technology=form.cleaned_data["technology"]
+                technology=form.cleaned_data["technology"],
+
+                photo=uploaded_file_url
 
             )
 
@@ -114,5 +139,5 @@ def auth(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('auth')
+    return redirect('project_index')
     
