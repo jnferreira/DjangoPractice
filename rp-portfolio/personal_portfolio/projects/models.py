@@ -10,3 +10,10 @@ class Project(models.Model):
     technology = models.CharField(max_length=20)
     photo = models.ImageField(storage=fs)
 
+
+class N(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    technology = models.CharField(max_length=20)
+    photo = models.ImageField(storage=fs)
+

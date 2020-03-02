@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
+# from newsapi import NewsApiClient
+
+# api = NewsApiClient(api_key='1cb066cbc82f42b697371162fd37e96f')
 
 from django.core.paginator import Paginator
 
@@ -18,7 +21,6 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-# Create your views here.
 def project_index(request):
 
     print(request.user.get_username())
@@ -37,11 +39,15 @@ def project_index(request):
 
     page_obj = paginator.get_page(page_number)
 
+    # news = api.get_top_headlines(sources='bbc-news')
+    # articles = news['articles']
+
     context = {
 
         'projects': projects,
         'page_obj': page_obj,
-        'username': username
+        'username': username,
+        # 'news': news['articles']
 
     }
 
